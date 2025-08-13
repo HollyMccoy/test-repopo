@@ -11,12 +11,14 @@ WORD_LIST = [word.lower() for word in words.words() if len(word) == 5]
 
 def wordler(clues):
     """
-    Finds possible 5-letter words based on given letters and their positions.
-    :param clues: A list of strings representing clues.
-                  Format "l-p": letter 'l' is at position 'p' (1-5).
-                  Format "l-0": letter 'l' is in the word, but position is unknown.
-                  Format "l-0-p": letter 'l' is in the word, but not at position 'p'.
-    :return: A list of possible 5-letter words.
+    Return all 5-letter words from WORD_LIST that satisfy the provided letter-position clues.
+    
+    Clues must be a list of strings using one of these formats:
+    - "l-p": letter `l` is at position `p` (1-5)
+    - "l-0": letter `l` appears somewhere in the word (position unknown)
+    - "l-0-q": letter `l` appears in the word but not at position `q` (1-5)
+    
+    Positions in clues are 1-based; excluded positions are converted to 0-based internally. The function enforces fixed-position letters, required-present letters, and per-letter excluded positions and returns a list of matching lowercase 5-letter words.
     """
     known_positions = [None] * 5
     present_letters = []
@@ -79,7 +81,14 @@ def wordler(clues):
 
 def run():
     """
-    Interactively asks user for clues and finds possible Wordle words.
+    Run an interactive prompt to collect Wordle-style clues and display matching 5-letter words.
+    
+    Collects clues from stdin until an empty line is entered, then passes the collected clues to `wordler(clues)` and prints the resulting candidates. Accepted clue formats (entered as strings) are:
+    - "l-p": letter `l` is at position `p` (1–5)
+    - "l-0": letter `l` is present somewhere (position unknown)
+    - "l-0-p": letter `l` is present but not at position `p`
+    
+    This function performs interactive I/O (reads from stdin, writes to stdout) and returns None.
     """
     print("\n--- Wordler ---")
     print("Enter clues one by one. Format: letter-position.")

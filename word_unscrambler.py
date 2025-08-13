@@ -4,7 +4,20 @@ import nltk
 
 def find_possible_words(letters, word_list):
     """
-    Finds all words from a word_list that can be formed using the given letters.
+    Return words from word_list that can be formed from the provided letters.
+    
+    The comparison is case-insensitive. A candidate word is included only if:
+    - it is non-empty,
+    - its length is greater than 4,
+    - it contains the first character of `letters` (after lowercasing),
+    - and every character in the candidate appears no more times than it does in `letters`.
+    
+    Parameters:
+        letters (str): Source letters used to form words (case-insensitive).
+        word_list (iterable[str]): Iterable of candidate words (strings).
+    
+    Returns:
+        list[str]: Matching words from word_list (lowercased and stripped).
     """
     letters_lower = letters.lower()
     letter_counts = Counter(letters_lower)
@@ -26,7 +39,13 @@ def find_possible_words(letters, word_list):
 
 def run():
     """
-    Main function to run the word finder.
+    Run an interactive word-unscrambler REPL using the NLTK words corpus.
+    
+    This function loads the NLTK word list (attempting to download the 'words' corpus if missing), then enters a loop prompting the user to enter exactly seven alphabetic characters or 'quit' to exit. For each valid input it calls find_possible_words to compute all candidate words that can be formed from the letters, prints a count and the matching words sorted by length then alphabetically, and repeats. If the NLTK library or corpus cannot be loaded/downloaded, the function prints an explanatory message and returns.
+    
+    Side effects:
+    - Reads from standard input and writes messages to standard output.
+    - May attempt to download the NLTK 'words' corpus if it is not available.
     """
     # Use NLTK's word corpus instead of a local file.
     try:
